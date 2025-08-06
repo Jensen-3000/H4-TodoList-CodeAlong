@@ -34,9 +34,5 @@ public class CreateActivity extends AppCompatActivity {
         pickPoints.setMaxValue(10);
         pickPoints.setValue(5);
         pickPoints.setWrapSelectorWheel(false);
-
-        pickPoints.setOnValueChangedListener((pickPoints, oldVal, newVal) -> {
-            Toast.makeText(this, "Points selected: " + newVal, Toast.LENGTH_SHORT).show();
-        });
     }
 }
