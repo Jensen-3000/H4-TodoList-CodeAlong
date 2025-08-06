@@ -31,11 +31,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.fob_add).setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), CreateActivity.class);
             startActivity(intent);
-
-            // Teacher Shenanigans
-//            Intent intent2 = new Intent(Intent.ACTION_SENDTO);
-//            intent.setData(Uri.parse("mailto:"));
-//            intent2.putExtra(Intent.EXTRA_EMAIL, "");
         });
     }
 }
