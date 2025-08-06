@@ -1,8 +1,9 @@
 package com.example.todolist;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class TodoItem {
+public class TodoItem implements Serializable {
     // Enums
     public enum Priority {LOW, MEDIUM, HIGH, CRITICAL}
     public enum Status {TODO, DOING, DONE}

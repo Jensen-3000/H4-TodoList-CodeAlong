@@ -8,6 +8,7 @@
     tools:context=".CreateActivity">
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -29,10 +30,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-<!--        <DatePicker-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content" />-->
+        <Button
+            android:id="@+id/btn_pick_datetime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Pick Date &amp; Time" />
+
     </LinearLayout>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fob_create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/container"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="32dp"
+        android:src="@drawable/baseline_add_48"
+        android:text="Create" />
 
 </RelativeLayout>

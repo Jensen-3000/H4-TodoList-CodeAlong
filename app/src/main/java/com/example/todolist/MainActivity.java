@@ -7,15 +7,22 @@ import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     List<TodoItem> todoItemList;
+    private TodoAdapter adapter;
+    private ActivityResultLauncher<Intent> createLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +35,28 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        todoItemList = new ArrayList<>();
+        adapter = new TodoAdapter(todoItemList);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+        createLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    TodoItem item = (TodoItem) result.getData().getSerializableExtra("todo_item");
+                    if (item != null) {
+                        todoItemList.add(item);
+                        adapter.notifyItemInserted(todoItemList.size() - 1);
+                    }
+                }
+            }
+        );
+
         findViewById(R.id.fob_add).setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), CreateActivity.class);
-            startActivity(intent);
-
-            // Teacher Shenanigans
-//            Intent intent2 = new Intent(Intent.ACTION_SENDTO);
-//            intent.setData(Uri.parse("mailto:"));
-//            intent2.putExtra(Intent.EXTRA_EMAIL, "");
+            createLauncher.launch(intent);
         });
     }
 }
