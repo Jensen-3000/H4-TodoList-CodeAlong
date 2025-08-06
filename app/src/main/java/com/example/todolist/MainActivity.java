@@ -15,12 +15,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
-    List<TodoItem> todoItemList;
+    private TodoListManager todoListManager;
     private TodoAdapter adapter;
     private ActivityResultLauncher<Intent> createLauncher;
 
@@ -35,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        todoItemList = new ArrayList<>();
-        adapter = new TodoAdapter(todoItemList);
+        todoListManager = TodoListManager.getInstance();
+        todoListManager.load(this);
+        adapter = new TodoAdapter(todoListManager.getTodoList());
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
@@ -47,8 +45,9 @@ public class MainActivity extends AppCompatActivity {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     TodoItem item = (TodoItem) result.getData().getSerializableExtra("todo_item");
                     if (item != null) {
-                        todoItemList.add(item);
-                        adapter.notifyItemInserted(todoItemList.size() - 1);
+                        todoListManager.addTodo(item);
+                        adapter.notifyItemInserted(todoListManager.getTodoList().size() - 1);
+                        todoListManager.save(this);
                     }
                 }
             }
@@ -58,5 +57,11 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), CreateActivity.class);
             createLauncher.launch(intent);
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        todoListManager.save(this);
     }
 }

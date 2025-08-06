@@ -32,7 +32,11 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
         holder.tvTitle.setText(item.getName());
         holder.tvPoints.setText("Points: " + item.getPoint());
         if (item.getDeadline() != null) {
-            holder.tvDeadline.setText("Deadline: " + item.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            try {
+                holder.tvDeadline.setText("Deadline: " + item.getDeadline().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            } catch (Exception e) {
+                holder.tvDeadline.setText("Deadline: Invalid date");
+            }
         } else {
             holder.tvDeadline.setText("No deadline");
         }
@@ -53,4 +57,3 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
         }
     }
 }
-
